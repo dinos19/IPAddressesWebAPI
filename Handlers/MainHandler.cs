@@ -26,7 +26,8 @@ namespace IpaddressesWebAPI.Handlers
         {
             //check in memory
             IPAddresses tmpIP = null;
-            Countries country = null;
+            Countries newCountry = null;
+            Countries currentCountry = null;
             iPAddresses = await mainRepository.GetIPListFromCache();
             if (iPAddresses != null && iPAddresses.Count > 0)
             {
@@ -55,16 +56,17 @@ namespace IpaddressesWebAPI.Handlers
             {
                 int newcountryid = 0;
                 //get from service
-                country = await ip2cService.GetFromip2c(ip);
-                if (country == null)
+                newCountry = await ip2cService.GetFromip2c(ip);
+                if (newCountry == null || newCountry.TwoLetterCode == "") return null;
+                //check if we have this country
+                currentCountry = await countryRepository.GetCountryByTwoLetter(newCountry.TwoLetterCode);
+                if (currentCountry == null)
                 {
-                    return null;
+                    newcountryid = await countryRepository.AddCountry(newCountry);
                 }
                 else
-                {
-                    newcountryid = await countryRepository.AddCountry(country);
+                    newcountryid = currentCountry.Id;
 
-                }
 
                 IPAddresses ipaddress = new IPAddresses
                 {
@@ -74,13 +76,14 @@ namespace IpaddressesWebAPI.Handlers
                 //todo repo should insert in cache
                 await iPAddressesRepository.InsertIPAddressOrUpdateDate(ipaddress);
                 mainRepository.AddToIPList(ipaddress);
-                //todo repo should insert in db
+                newCountry.Id = newcountryid;
+
             }
             else
             {
-                country = await countryRepository.GetCountryByID(tmpIP.CountryId);
+                newCountry = await countryRepository.GetCountryByID(tmpIP.CountryId);
             }
-            return country;
+            return newCountry;
         }
 
 
@@ -91,7 +94,7 @@ namespace IpaddressesWebAPI.Handlers
         public async Task<List<ReportModel>> ReportCountries(string param)
         {
 
-            List<ReportModel> tmpList = await mainRepository.ReportCountries(param);
+            List<ReportModel> tmpList = await countryRepository.ReportCountries(param);
 
             return tmpList;
         }

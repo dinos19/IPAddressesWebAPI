@@ -61,16 +61,7 @@ namespace IpaddressesWebAPI.Repositories
             return ipaddress.Id;
         }
 
-        public async Task<List<IPAddresses>> GetIPAddressesToUpdate(int index, int numberOfItems = 100)
-        {
-
-            var query = from b in dataContext.IPAddresses
-                        select b;
-
-            var pagedProductQuery = query.Skip(numberOfItems * index).Take(numberOfItems);
-
-            return pagedProductQuery.ToList();
-        }
+        
 
         internal async Task<IPAddresses> UpdateNewCountryAndDate(IPAddresses ipaddres, int countryid)
         {
@@ -80,12 +71,6 @@ namespace IpaddressesWebAPI.Repositories
             return ipaddres;
         }
 
-        internal async Task<IPAddresses> UpdateDate(IPAddresses ipaddres)
-        {
-            ipaddres.UpdatedAt = DateTime.Now.ToString("yyyy'-'MM'-'dd' 'HH':'mm':'ss");
-            await dataContext.SaveChangesAsync();
-            return ipaddres;
-        }
         //put
         //delete
     }

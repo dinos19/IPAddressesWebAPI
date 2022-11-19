@@ -3,7 +3,6 @@ using Hangfire.MemoryStorage;
 using IpaddressesWebAPI.DBFolder;
 using IpaddressesWebAPI.Handlers;
 using IpaddressesWebAPI.Jobs;
-using IpaddressesWebAPI.Managers;
 using IpaddressesWebAPI.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,7 +16,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
+}, ServiceLifetime.Transient);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -31,7 +30,8 @@ builder.Services.AddTransient<MainHandler>();
 builder.Services.AddTransient<CountryRepository>();
 builder.Services.AddTransient<IPAddressesRepository>();
 builder.Services.AddTransient<MainRepository>();
-builder.Services.AddTransient<DatabaseRefreshTask>();
+builder.Services.AddTransient<DatabaseRefreshTaskManager>();
+builder.Services.AddTransient<DatabaseCronJob>();
 
 //for cron job
 builder.Services.AddSingleton<RecurringJobManager>();
@@ -63,6 +63,7 @@ app.MapControllers();
 
 app.UseHangfireDashboard();
 
-MainManager mainManager = new MainManager(app.Services);
-
+var scopeeee = app.Services.CreateScope();
+var databaseRefreshTask = scopeeee.ServiceProvider.GetService<DatabaseRefreshTaskManager>();
+databaseRefreshTask.InsertTask();
 app.Run();

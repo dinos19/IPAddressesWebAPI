@@ -32,5 +32,25 @@ namespace IpaddressesWebAPI.Controllers
             List<ReportModel> countries = await mainHandler.ReportCountries(stringList[0]);
             return Ok(countries);
         }
+
+        [HttpPost]
+        
+        public async Task<IActionResult> CreateData()
+        {
+            //it takes about 50 seconds if 511 ip are all new
+            string StartIP = "152.89.40.0";
+            int IPCount = 511;
+
+            uint n = DummyHelper.ParseIP(StartIP);
+            string[] range = new string[IPCount];
+            for (uint i = 0; i < IPCount; i++)
+            {
+                var tmpip = DummyHelper.FormatIP(n + i);
+                await mainHandler.HandleNewRequest(tmpip);
+            }
+
+
+            return Ok();
+        }
     }
 }

@@ -23,32 +23,31 @@ namespace IpaddressesWebAPI.Controllers
             return Ok(await countryRepository.GetCountries());
 
         }
-        [HttpGet("{id}")]
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<Countries>> GetCountryByID(int id)
+        //{
+        //    return Ok(await countryRepository.GetCountryByID(id));
+        //}
 
-        public async Task<ActionResult<Countries>> GetCountryByID(int id)
-        {
-            return Ok(await countryRepository.GetCountryByID(id));
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> AddCountry(Countries country)
-        {
+        //[HttpPost]
+        //public async Task<IActionResult> AddCountry(Countries country)
+        //{
             
-            await countryRepository.AddCountry(country);
-            return Ok();
-        }
+        //    await countryRepository.AddCountry(country);
+        //    return Ok();
+        //}
 
-        [HttpPut]
-        public async Task<IActionResult> UpdatedCountry(Countries request)
-        {
-             countryRepository.UpdatedCountry(request);
-            return Ok();
-        }
-        [HttpDelete]
-        public async Task<IActionResult> DeleteCountry(int id)
-        {
-            countryRepository.DeleteCountryById(id);
-            return Ok();
-        }
+        //[HttpPut]
+        //public async Task<IActionResult> UpdatedCountry(Countries request)
+        //{
+        //     countryRepository.UpdatedCountry(request);
+        //    return Ok();
+        //}
+        //[HttpDelete]
+        //public async Task<IActionResult> DeleteCountry(int id)
+        //{
+        //    countryRepository.DeleteCountryById(id);
+        //    return Ok();
+        //}
     }
 }
