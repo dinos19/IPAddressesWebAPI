@@ -1,5 +1,6 @@
+<h1 align="center">Web API in .net 6</h1>
 
-# Web API in .net 6
+
 
 ## __Functionality__
 #### 1) An endpoint which accepts an IP and uses a free service to find the location
