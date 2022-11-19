@@ -1,6 +1,7 @@
 ﻿using IpaddressesWebAPI.DBFolder;
 using IpaddressesWebAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace IpaddressesWebAPI.Repositories
 {
@@ -65,9 +66,13 @@ namespace IpaddressesWebAPI.Repositories
 
         internal async Task<IPAddresses> UpdateNewCountryAndDate(IPAddresses ipaddres, int countryid)
         {
+            dataContext.Attach(ipaddres);
+
             ipaddres.UpdatedAt = DateTime.Now.ToString("yyyy'-'MM'-'dd' 'HH':'mm':'ss");
             ipaddres.CountryId = countryid;
+
             await dataContext.SaveChangesAsync();
+
             return ipaddres;
         }
 

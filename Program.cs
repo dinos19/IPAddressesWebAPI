@@ -16,7 +16,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-}, ServiceLifetime.Scoped);
+}, ServiceLifetime.Transient,ServiceLifetime.Transient);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -30,8 +30,8 @@ builder.Services.AddTransient<MainHandler>();
 builder.Services.AddTransient<CountryRepository>();
 builder.Services.AddTransient<IPAddressesRepository>();
 builder.Services.AddTransient<MainRepository>();
-builder.Services.AddScoped<DatabaseRefreshTaskManager>();
-builder.Services.AddScoped<DatabaseCronJob>();
+builder.Services.AddTransient<DatabaseRefreshTaskManager>();
+builder.Services.AddTransient<DatabaseCronJob>();
 
 //for cron job
 builder.Services.AddSingleton<RecurringJobManager>();

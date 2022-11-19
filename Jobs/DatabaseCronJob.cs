@@ -38,8 +38,8 @@ namespace IpaddressesWebAPI.Jobs
 
             var currentCountry = await countryRepository.GetCountryByID(ipaddres.CountryId);
             var newCountry = await ip2cService.GetFromip2c(ipaddres.IP);
-
-            if (currentCountry.Name.ToLower() != newCountry.Name.ToLower())
+            //todo check if currentCountry is not null or the country changed ( by check our current and new name )
+            if ( currentCountry == null || currentCountry.Name.ToLower() != newCountry.Name.ToLower())
             {
                 //country changed, //look up the country from db
                 var tmpcountry = await countryRepository.GetCountryByTwoLetter(newCountry.TwoLetterCode);

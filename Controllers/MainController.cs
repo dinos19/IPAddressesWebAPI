@@ -15,7 +15,8 @@ namespace IpaddressesWebAPI.Controllers
             this.mainHandler = mainHandler;
         }
 
-        [HttpGet]
+        [HttpGet("{ip}")]
+
         public async Task<IActionResult> CheckMyIP(string ip)
         {
             if (!IpHelper.isIP(ip))
@@ -26,20 +27,25 @@ namespace IpaddressesWebAPI.Controllers
             return Ok(country);
         }
 
-        [HttpGet("{stringList}")]
+        [HttpGet]
+        [Route("api/[controller]/ReportCountry")]
+
         public async Task<IActionResult> ReportCountry(List<string> stringList)
         {
-            List<ReportModel> countries = await mainHandler.ReportCountries(stringList[0]);
+            string param = (stringList.Count == 0) ? "" : stringList[0];
+            List <ReportModel> countries = await mainHandler.ReportCountries(param);
             return Ok(countries);
         }
 
         [HttpPost]
-        
+        [Route("api/[controller]/CreateData")]
+
         public async Task<IActionResult> CreateData()
         {
+            //feed db
             //it takes about 50 seconds if 511 ip are all new
             string StartIP = "152.89.40.0";
-            int IPCount = 511;
+            int IPCount = 200;
 
             uint n = DummyHelper.ParseIP(StartIP);
             string[] range = new string[IPCount];

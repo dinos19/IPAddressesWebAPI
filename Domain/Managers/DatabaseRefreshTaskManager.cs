@@ -23,8 +23,9 @@ namespace IpaddressesWebAPI.Jobs
 
         public async Task InsertTask()
         {
+            //run every 1 hour ( when time *:00)
             recurringJobManager.AddOrUpdate(
-    "run every 1 hour",
+    "Database data validation",
     () => UpdateDBJob(),
     "0 * * * *");
         }

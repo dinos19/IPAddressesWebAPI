@@ -15,7 +15,7 @@ namespace IpaddressesWebAPI.Repositories
 
         public async Task<List<Countries>> GetCountries()
         {
-           return await dataContext.Countries.ToListAsync();
+            return await dataContext.Countries.ToListAsync();
         }
 
         public async Task<Countries> GetCountryByID(int id)
@@ -69,7 +69,7 @@ namespace IpaddressesWebAPI.Repositories
         {
             var country = await dataContext.Countries.FindAsync(id);
             if (country == null)
-                return ;
+                return;
 
             dataContext.Countries.Remove(country);
             await dataContext.SaveChangesAsync();
@@ -78,17 +78,23 @@ namespace IpaddressesWebAPI.Repositories
         public async Task<List<ReportModel>> ReportCountries(string parameteres)
         {
             List<ReportModel> tmpList = new List<ReportModel>();
-            string[] words = parameteres.Split(",", System.StringSplitOptions.RemoveEmptyEntries); //
 
             //string connectionstring = "Server=(localdb)\\\\MSSQLLocalDB;Database=superherodb;Trusted_Connection=True;Encrypt=False";
-            string connectionstring = @"Server=(localdb)\MSSQLLocalDB;Database=superherodb;Trusted_Connection=True;Encrypt=False;";
+            string connectionstring = @"Server=(localdb)\MSSQLLocalDB;Database=ipaddressesdb;Trusted_Connection=True;Encrypt=False;";
             string whereclause = "";
-            foreach (string param in words)
+            if (parameteres != null || parameteres.Trim() != "")
             {
-                if (whereclause == "")
-                    whereclause += $@" where Countries.TwoLetterCode = '{param}'";
-                else
-                    whereclause += $@" OR Countries.TwoLetterCode = '{param}'";
+
+
+                string[] words = parameteres.Split(",", System.StringSplitOptions.RemoveEmptyEntries); //
+
+                foreach (string param in words)
+                {
+                    if (whereclause == "")
+                        whereclause += $@" where Countries.TwoLetterCode = '{param}'";
+                    else
+                        whereclause += $@" OR Countries.TwoLetterCode = '{param}'";
+                }
             }
             FormattableString query = $"select Countries.Name, Count(IPAddresses.CountryId)as AddressesCount, MAX(UpdatedAt) as LastAddressUpdated from IPAddresses inner join Countries  on IPAddresses.CountryId = Countries.Id {whereclause} group by Countries.Name";
 

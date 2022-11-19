@@ -9,12 +9,10 @@ namespace IpaddressesWebAPI.Repositories
     public class MainRepository
     {
         private IMemoryCache cacheProvider;
-        private DataContext dbContext;
 
-        public MainRepository(IMemoryCache cacheProvider, DataContext dbContext)
+        public MainRepository(IMemoryCache cacheProvider)
         {
             this.cacheProvider = cacheProvider;
-            this.dbContext = dbContext;
 
         }
 
@@ -23,11 +21,6 @@ namespace IpaddressesWebAPI.Repositories
             List<IPAddresses> list = cacheProvider.Get<List<IPAddresses>>("IPADDRESSLIST");
 
             return list;
-        }
-
-        public async void SetIPListFromCache(List<IPAddresses> CachedList)
-        {
-            cacheProvider.Set("IPADDRESSLIST", CachedList, TimeSpan.FromHours(1));
         }
 
         public async void AddToIPList(IPAddresses CachedAddress)
@@ -47,7 +40,7 @@ namespace IpaddressesWebAPI.Repositories
                 {
                     CachedAddress
                 };
-            cacheProvider.Set("IPADDRESSLIST", list, TimeSpan.FromHours(1));
+            cacheProvider.Set("IPADDRESSLIST", list);
         }
 
         
