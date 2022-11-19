@@ -6,7 +6,7 @@ namespace IpaddressesWebAPI.Repositories
 {
     public class IPAddressesRepository
     {
-        private readonly DataContext dataContext;
+        public readonly DataContext dataContext;
 
         public IPAddressesRepository(DataContext dataContext)
         {
@@ -71,6 +71,10 @@ namespace IpaddressesWebAPI.Repositories
             return ipaddres;
         }
 
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
         //put
         //delete
     }

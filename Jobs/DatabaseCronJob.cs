@@ -20,6 +20,7 @@ namespace IpaddressesWebAPI.Jobs
 
         public async Task HandleBatch(List<IPAddresses> batch)
         {
+            Console.WriteLine(iPAddressesRepository.dataContext.GetHashCode());
             var watch = System.Diagnostics.Stopwatch.StartNew();
 
             foreach (var ipaddress in batch)

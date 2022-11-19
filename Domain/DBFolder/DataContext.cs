@@ -15,5 +15,10 @@ namespace IpaddressesWebAPI.DBFolder
             //optionsBuilder.UseSqlServer(@"Server=NAG6CHANDRVAR01; initial catalog=OrderDb;integrated security=true;");
             optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=ipaddressesdb;Trusted_Connection=True;Encrypt=False;");
         }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 }
